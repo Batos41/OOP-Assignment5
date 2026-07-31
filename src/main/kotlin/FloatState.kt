@@ -1,14 +1,9 @@
-interface FloatState {
-    fun consume(char: Char): FloatState
-    val isAccepting: Boolean
-}
-
-sealed class ConcreteFloatState : FloatState {
+sealed class ConcreteFloatState : State {
 
     object Start : ConcreteFloatState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): FloatState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             '0' -> LeadingZero
             in '1'..'9' -> IntegerPart
             '.' -> Period
@@ -17,18 +12,18 @@ sealed class ConcreteFloatState : FloatState {
     }
 
     object LeadingZero : ConcreteFloatState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): FloatState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             '.' -> Period
             else -> Reject
         }
     }
 
     object IntegerPart : ConcreteFloatState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): FloatState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             in '0'..'9' -> IntegerPart
             '.' -> Period
             else -> Reject
@@ -36,26 +31,26 @@ sealed class ConcreteFloatState : FloatState {
     }
 
     object Period : ConcreteFloatState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): FloatState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             in '0'..'9' -> FractionPart
             else -> Reject
         }
     }
 
     object FractionPart : ConcreteFloatState() {
-        override val isAccepting: Boolean = true
+        override val isCurrentlyValid: Boolean = true
 
-        override fun consume(char: Char): FloatState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             in '0'..'9' -> FractionPart
             else -> Reject
         }
     }
 
     object Reject : ConcreteFloatState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): FloatState = Reject
+        override fun consume(char: Char): State = Reject
     }
 }

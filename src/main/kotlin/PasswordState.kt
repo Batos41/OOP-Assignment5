@@ -1,9 +1,4 @@
-interface PasswordState {
-    fun consume(char: Char): PasswordState
-    val isAccepting: Boolean
-}
-
-sealed class ConcretePasswordState : PasswordState {
+sealed class ConcretePasswordState : State {
 
     companion object {
         const val SPECIAL_CHARS = "!@#$%&*"
@@ -12,9 +7,9 @@ sealed class ConcretePasswordState : PasswordState {
     }
 
     object Start : ConcretePasswordState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isUpper(char) -> HasUpper
             isSpecial(char) -> HasSpecial
             else -> Neither
@@ -22,9 +17,9 @@ sealed class ConcretePasswordState : PasswordState {
     }
 
     object Neither : ConcretePasswordState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isUpper(char) -> HasUpper
             isSpecial(char) -> HasSpecial
             else -> Neither
@@ -32,36 +27,36 @@ sealed class ConcretePasswordState : PasswordState {
     }
 
     object HasUpper : ConcretePasswordState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isSpecial(char) -> BothEndsInSpecial
             else -> HasUpper
         }
     }
 
     object HasSpecial : ConcretePasswordState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isUpper(char) -> BothEndsInValid
             else -> HasSpecial
         }
     }
 
     object BothEndsInValid : ConcretePasswordState() {
-        override val isAccepting: Boolean = true
+        override val isCurrentlyValid: Boolean = true
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isSpecial(char) -> BothEndsInSpecial
             else -> BothEndsInValid
         }
     }
 
     object BothEndsInSpecial : ConcretePasswordState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): PasswordState = when {
+        override fun consume(char: Char): State = when {
             isSpecial(char) -> BothEndsInSpecial
             else -> BothEndsInValid
         }

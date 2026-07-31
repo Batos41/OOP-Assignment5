@@ -45,12 +45,12 @@ class BinaryDetectorTest {
     @Test
     fun `verify state properties and reject state persistence`() {
         val reject = ConcreteBinaryState.Reject
-        assertFalse(reject.isAccepting)
+        assertFalse(reject.isCurrentlyValid)
         assertEquals(reject, reject.consume('1'))
         assertEquals(reject, reject.consume('0'))
 
-        assertFalse(ConcreteBinaryState.Start.isAccepting)
-        assertTrue(ConcreteBinaryState.EndsWithOne.isAccepting)
-        assertFalse(ConcreteBinaryState.EndsWithZero.isAccepting)
+        assertFalse(ConcreteBinaryState.Start.isCurrentlyValid)
+        assertTrue(ConcreteBinaryState.EndsWithOne.isCurrentlyValid)
+        assertFalse(ConcreteBinaryState.EndsWithZero.isCurrentlyValid)
     }
 }

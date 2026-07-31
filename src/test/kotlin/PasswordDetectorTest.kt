@@ -47,12 +47,12 @@ class PasswordDetectorTest {
 
     @Test
     fun `verify state properties and transitions`() {
-        assertFalse(ConcretePasswordState.Start.isAccepting)
-        assertFalse(ConcretePasswordState.Neither.isAccepting)
-        assertFalse(ConcretePasswordState.HasUpper.isAccepting)
-        assertFalse(ConcretePasswordState.HasSpecial.isAccepting)
-        assertTrue(ConcretePasswordState.BothEndsInValid.isAccepting)
-        assertFalse(ConcretePasswordState.BothEndsInSpecial.isAccepting)
+        assertFalse(ConcretePasswordState.Start.isCurrentlyValid)
+        assertFalse(ConcretePasswordState.Neither.isCurrentlyValid)
+        assertFalse(ConcretePasswordState.HasUpper.isCurrentlyValid)
+        assertFalse(ConcretePasswordState.HasSpecial.isCurrentlyValid)
+        assertTrue(ConcretePasswordState.BothEndsInValid.isCurrentlyValid)
+        assertFalse(ConcretePasswordState.BothEndsInSpecial.isCurrentlyValid)
 
         // Exercise Neither state self-loop
         val state = ConcretePasswordState.Start.consume('a')

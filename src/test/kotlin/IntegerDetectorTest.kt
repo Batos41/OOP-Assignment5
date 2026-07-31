@@ -49,12 +49,12 @@ class IntegerDetectorTest {
     fun `verify state properties and reject state persistence`() {
         // Direct test for Reject state transitions & properties
         val reject = ConcreteIntegerState.Reject
-        assertFalse(reject.isAccepting)
+        assertFalse(reject.isCurrentlyValid)
         assertEquals(reject, reject.consume('a'))
         assertEquals(reject, reject.consume('1'))
 
         // Verify isAccepting properties on states directly
-        assertFalse(ConcreteIntegerState.Start.isAccepting)
-        assertTrue(ConcreteIntegerState.Valid.isAccepting)
+        assertFalse(ConcreteIntegerState.Start.isCurrentlyValid)
+        assertTrue(ConcreteIntegerState.Valid.isCurrentlyValid)
     }
 }

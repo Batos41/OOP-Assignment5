@@ -1,23 +1,18 @@
-interface BinaryState {
-    fun consume(char: Char): BinaryState
-    val isAccepting: Boolean
-}
-
-sealed class ConcreteBinaryState : BinaryState {
+sealed class ConcreteBinaryState : State {
 
     object Start : ConcreteBinaryState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): BinaryState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             '1' -> EndsWithOne
             else -> Reject
         }
     }
 
     object EndsWithOne : ConcreteBinaryState() {
-        override val isAccepting: Boolean = true
+        override val isCurrentlyValid: Boolean = true
 
-        override fun consume(char: Char): BinaryState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             '1' -> EndsWithOne
             '0' -> EndsWithZero
             else -> Reject
@@ -25,9 +20,9 @@ sealed class ConcreteBinaryState : BinaryState {
     }
 
     object EndsWithZero : ConcreteBinaryState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): BinaryState = when (char) {
+        override fun consume(char: Char): State = when (char) {
             '1' -> EndsWithOne
             '0' -> EndsWithZero
             else -> Reject
@@ -35,8 +30,8 @@ sealed class ConcreteBinaryState : BinaryState {
     }
 
     object Reject : ConcreteBinaryState() {
-        override val isAccepting: Boolean = false
+        override val isCurrentlyValid: Boolean = false
 
-        override fun consume(char: Char): BinaryState = Reject
+        override fun consume(char: Char): State = Reject
     }
 }

@@ -53,15 +53,15 @@ class EmailDetectorTest {
     @Test
     fun `verify state properties and reject state persistence`() {
         val reject = ConcreteEmailState.Reject
-        assertFalse(reject.isAccepting)
+        assertFalse(reject.isCurrentlyValid)
         assertEquals(reject, reject.consume('a'))
 
-        assertFalse(ConcreteEmailState.Part1.isAccepting)
-        assertFalse(ConcreteEmailState.Part1Valid.isAccepting)
-        assertFalse(ConcreteEmailState.Part2Valid.isAccepting)
-        assertFalse(ConcreteEmailState.AfterAt.isAccepting)
-        assertFalse(ConcreteEmailState.AfterDot.isAccepting)
-        assertTrue(ConcreteEmailState.Part3Valid.isAccepting)
+        assertFalse(ConcreteEmailState.Part1.isCurrentlyValid)
+        assertFalse(ConcreteEmailState.Part1Valid.isCurrentlyValid)
+        assertFalse(ConcreteEmailState.Part2Valid.isCurrentlyValid)
+        assertFalse(ConcreteEmailState.AfterAt.isCurrentlyValid)
+        assertFalse(ConcreteEmailState.AfterDot.isCurrentlyValid)
+        assertTrue(ConcreteEmailState.Part3Valid.isCurrentlyValid)
     }
 
     // --- 6. MISSING BRANCH COVERAGE FOR ASCII 46 (.) AND ASCII 64 (@) ---

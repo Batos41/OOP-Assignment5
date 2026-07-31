@@ -67,15 +67,15 @@ class FloatDetectorTest {
     fun `verify state properties and reject state persistence`() {
         // Direct test for Reject state transitions & properties to ensure 100% branch coverage
         val reject = ConcreteFloatState.Reject
-        assertFalse(reject.isAccepting)
+        assertFalse(reject.isCurrentlyValid)
         assertEquals(reject, reject.consume('a'))
         assertEquals(reject, reject.consume('1'))
 
         // Verify isAccepting properties on non-accepting states explicitly
-        assertFalse(ConcreteFloatState.Start.isAccepting)
-        assertFalse(ConcreteFloatState.LeadingZero.isAccepting)
-        assertFalse(ConcreteFloatState.IntegerPart.isAccepting)
-        assertFalse(ConcreteFloatState.Period.isAccepting)
-        assertTrue(ConcreteFloatState.FractionPart.isAccepting)
+        assertFalse(ConcreteFloatState.Start.isCurrentlyValid)
+        assertFalse(ConcreteFloatState.LeadingZero.isCurrentlyValid)
+        assertFalse(ConcreteFloatState.IntegerPart.isCurrentlyValid)
+        assertFalse(ConcreteFloatState.Period.isCurrentlyValid)
+        assertTrue(ConcreteFloatState.FractionPart.isCurrentlyValid)
     }
 }
