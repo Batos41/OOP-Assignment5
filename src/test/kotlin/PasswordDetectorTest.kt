@@ -98,4 +98,18 @@ class PasswordDetectorTest {
         // Branch 2: Non-special character (recovers back to valid)
         assertEquals(ConcretePasswordState.BothEndsInValid, state.consume('a'))
     }
+
+    @Test
+    fun `verify password reject state properties and persistence`() {
+        val reject = ConcretePasswordState.Reject
+
+        // 1. Ensure reject state is not an accepting state
+        assertFalse(reject.isCurrentlyValid)
+
+        // 2. Ensure self-loop persistence on consuming any character
+        assertEquals(reject, reject.consume('a'))
+        assertEquals(reject, reject.consume('A'))
+        assertEquals(reject, reject.consume('!'))
+        assertEquals(reject, reject.consume('1'))
+    }
 }

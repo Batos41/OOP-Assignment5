@@ -61,4 +61,10 @@ sealed class ConcretePasswordState : State {
             else -> BothEndsInValid
         }
     }
+
+    object Reject : ConcretePasswordState() {
+        override val isCurrentlyValid: Boolean = false
+
+        override fun consume(char: Char): State = Reject
+    }
 }

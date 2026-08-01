@@ -3,18 +3,19 @@
  */
 abstract class StringDetector(
     private val initialState: State,
-    private val rejectState: State? = null
+    private val rejectState: State,
+    private val minimumLength: Int = 1
 ) {
-    open fun isValid(input: String): Boolean {
-        if (input.isEmpty()) return false
+    fun isValid(input: String): Boolean {
+        if (input.length < minimumLength) return false
 
         var currentState = initialState
 
         for (char in input) {
             currentState = currentState.consume(char)
 
-            // Short-circuit if a reject state is defined
-            if (rejectState != null && currentState == rejectState) {
+            // Short-circuit if a reject state is defined and reached
+            if (currentState == rejectState) {
                 return false
             }
         }
@@ -44,11 +45,7 @@ class EmailDetector : StringDetector(
 )
 
 class PasswordDetector : StringDetector(
-    initialState = ConcretePasswordState.Start
-    // No rejectState passed!
-) {
-    override fun isValid(input: String): Boolean {
-        if (input.length < 8) return false
-        return super.isValid(input)
-    }
-}
+    initialState = ConcretePasswordState.Start,
+    rejectState = ConcretePasswordState.Reject,
+    minimumLength = 8
+)
